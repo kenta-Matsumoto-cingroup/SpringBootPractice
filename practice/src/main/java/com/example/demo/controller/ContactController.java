@@ -17,61 +17,62 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class ContactController {
-    @Autowired
-    private ContactService contactService;
+	@Autowired
+	private ContactService contactService;
 
-    @GetMapping("/contact")
-    public String contact(Model model) {
-        model.addAttribute("contactForm", new ContactForm());
+	@GetMapping("/contact")
+	public String contact(Model model) {
+		model.addAttribute("contactForm", new ContactForm());
 
-        return "contact";
-    }
+		return "contact";
+	}
 
-    @PostMapping("/contact")
-    public String contact(@Validated @ModelAttribute("contactForm") ContactForm contactForm, BindingResult errorResult, HttpServletRequest request) {
-        if (errorResult.hasErrors()) {
-          return "contact";
-        }
+	@PostMapping("/contact")
+	public String contact(@Validated @ModelAttribute("contactForm") ContactForm contactForm, BindingResult errorResult,
+			HttpServletRequest request) {
+		if (errorResult.hasErrors()) {
+			return "contact";
+		}
 
-        HttpSession session = request.getSession();
-        session.setAttribute("contactForm", contactForm);
+		HttpSession session = request.getSession();
+		session.setAttribute("contactForm", contactForm);
 
-        return "redirect:/contact/confirm";
-    }
+		return "redirect:/contact/confirm";
+	}
 
-    @GetMapping("/contact/confirm")
-    public String confirm(Model model, HttpServletRequest request) {
-        HttpSession session = request.getSession();
+	@GetMapping("/contact/confirm")
+	public String confirm(Model model, HttpServletRequest request) {
+		HttpSession session = request.getSession();
 
-        ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
-        model.addAttribute("contactForm", contactForm);
-        return "confirmation";
-    }
+		ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
+		model.addAttribute("contactForm", contactForm);
+		return "confirmation";
+	}
 
-    @PostMapping("/contact/register")
-    public String register(Model model, HttpServletRequest request) {
+	@PostMapping("/contact/register")
+	public String register(Model model, HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
+		HttpSession session = request.getSession();
+		ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
 
-        contactService.saveContact(contactForm);
+		contactService.saveContact(contactForm);
 
-        return "redirect:/contact/complete";
-    }
+		return "redirect:/contact/complete";
+	}
 
-    @GetMapping("/contact/complete")
-    public String complete(Model model, HttpServletRequest request) {
+	@GetMapping("/contact/complete")
+	public String complete(Model model, HttpServletRequest request) {
 
-        if (request.getSession(false) == null) {
-          return "redirect:/contact";
-        }
+		if (request.getSession(false) == null) {
+			return "redirect:/contact";
+		}
 
-        HttpSession session = request.getSession();
-        ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
-        model.addAttribute("contactForm", contactForm);
+		HttpSession session = request.getSession();
+		ContactForm contactForm = (ContactForm) session.getAttribute("contactForm");
+		model.addAttribute("contactForm", contactForm);
 
-        session.invalidate();
+		session.invalidate();
 
-        return "completion";
-      }
+		return "completion";
+	}
 }
