@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<title>お問い合わせ一覧</title>
+</head>
+
+<body>
+
+	<h2>お問い合わせ一覧</h2>
+
+	<table border="1">
+		<thead>
+			<tr>
+				<th>お問い合わせID</th>
+				<th>姓</th>
+				<th>名</th>
+				<th>お問い合わせ種別</th>
+				<th>作成日時</th>
+				<th>更新日時</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<!-- お問い合わせ情報のリストをループで表示 -->
+			<tr th:each="contact : ${contacts}">
+				<td th:text="${contact.id}">ID</td>
+				<td th:text="${contact.firstName}">姓</td>
+				<td th:text="${contact.lastName}">名</td>
+				<td th:text="${contact.contactType}">種別</td>
+				<td th:text="${contact.createdAt}">作成日時</td>
+				<td th:text="${contact.updatedAt}">更新日時</td>
+				<td>
+					<!-- 詳細ページへのリンク -->
+					<form th:action="@{/admin/contacts/{id}(id=${contact.id})}" method="get">
+						<input type="submit" value="詳細">
+					</form>
+				</td>
+			</tr>
+
+		</tbody>
+	</table>
+
+	<a href="/admin/sign-in">ログアウト</a>
+</body>
+
+</html>
