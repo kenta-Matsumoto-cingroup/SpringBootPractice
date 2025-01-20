@@ -29,13 +29,13 @@ public class SecurityConfig {
 								"/admin/login", "/admin/contacts/{id}","/admin/contacts/{id}/edit","/admin/contacts/{id}/delete")
 						.permitAll() // 認証なしでアクセス可能
 						// 他のURLは認証が必要
-						.anyRequest().authenticated())
-				.formLogin(login -> login
+						.anyRequest().authenticated());
+				/*.formLogin(login -> login
 						.loginPage("/admin/signin") // ログインページの指定
 						.permitAll())
 				.logout(logout -> logout
 						.permitAll()); // ログアウトページも認証なしでアクセス可能
-
+*/
 		return http.build();
 	}
 }
